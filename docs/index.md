@@ -8,18 +8,15 @@ hero:
   tagline:
   actions:
     - theme: brand
-      text: A
+      text: Docs
       link: /distributed
     - theme: alt
-      text: B
-      link: /6.s824Papers
+      text: Notes
+      link: /index
 
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: Docs
+    details: 记录一些好玩的东西
+  - title: Notes
+    details: 随心札记
 ---
-
