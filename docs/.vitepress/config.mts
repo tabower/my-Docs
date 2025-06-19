@@ -8,9 +8,19 @@ export default defineConfig({
     [
       "meta",
       {
-        name:"referrer",
-        content:"no-referrer"
+        name: "referrer",
+        content: "no-referrer"
       }
+    ],
+    [
+      "script",
+      {
+        defer: "", // 或 `defer: ""` 如果报类型错误
+        src: "https://static.cloudflareinsights.com/beacon.min.js",
+        "data-cf-beacon": JSON.stringify({
+          token: "c1eff9ba2dfb4ee1a94d642fb6468ce1",
+        }),
+      },
     ],
   ],
   themeConfig: {
@@ -21,9 +31,9 @@ export default defineConfig({
     ],
 
     sidebar: [
-       {
+      {
         text: 'Distributed',
-        link:'/distributed/index',
+        link: '/distributed/index',
         items: [
           { text: 'aurora', link: '/distributed/aurora' },
           { text: 'craq', link: '/distributed/craq' },
@@ -34,7 +44,7 @@ export default defineConfig({
       },
       {
         text: 'ask',
-        link:'/ask/index',
+        link: '/ask/index',
         items: [
           { text: '中断处理', link: '/ask/中断处理' },
           { text: '虚存管理', link: '/ask/虚存管理' },
@@ -42,7 +52,7 @@ export default defineConfig({
         ]
       }
     ],
-    
+
 
     socialLinks: [
       { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
