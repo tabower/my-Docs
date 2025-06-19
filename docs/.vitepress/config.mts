@@ -30,6 +30,12 @@ export default defineConfig({
           { text: 'google file system', link: '/distributed/google_file_system' },
           { text: 'zookeeper', link: '/distributed/zookeeper' },
         ]
+      },
+      {
+        text: 'aos',
+        items: [
+          { text: '中断处理', link: '/aos/中断处理' },
+        ]
       }
     ],
     

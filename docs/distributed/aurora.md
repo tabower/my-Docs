@@ -140,13 +140,24 @@ IT 工作负载正日益迁移到公共云提供商。这种全行业转型的�
 
 
 **3.1 放大写入的负担**
+
+
+
 我们对存储卷进行分段并将每个段以 6 份复制、使用 4/6 写仲裁的模型提供了高弹性。不幸的是，此模型对于像 MySQL 这样的传统数据库性能难以承受，因为它为每个应用写入生成许多不同的实际 I/O。高 I/O 量被复制放大，带来了沉重的每秒数据包 (PPS) 负担。此外，I/O 导致同步点，
+
+
 
 使流水线停顿并延长延迟。虽然链式复制 [8] 及其替代方案可以减少网络成本，但它们仍然遭受同步停顿和累积延迟的影响。
 
+
+
 让我们检查写入在传统数据库中如何工作。像 MySQL 这样的系统将数据页写入其暴露的对象（例如，堆文件、B 树等），并将重做日志记录写入预写日志 (WAL)。每个重做日志记录包含被修改页面的后映像和前映像之间的差异。可以将日志记录应用于页面的前映像以产生其后映像。
 
+
+
 实践中，还必须写入其他数据。例如，考虑一个实现跨数据中心高可用性并在主备配置（如图 2 所示）中运行的同步镜像 MySQL 配置。AZ1 中有一个活跃 MySQL 实例，其网络存储位于 Amazon Elastic Block Store (EBS)。AZ2 中还有一个备用 MySQL 实例，其网络存储也位于 EBS。对主 EBS 卷的写入使用软件镜像与备用 EBS 卷同步。
+
+
 
 图 2 显示了引擎需要写入的各种类型数据：重做日志、为支持时间点恢复而归档到 Amazon Simple Storage Service (S3) 的二进制（语句）日志、修改的数据页、为防止页面撕裂而对数据页进行的第二次临时写入（双写），最后是元数据 (FRM) 文件。该图还显示了实际 I/O 流的顺序如下：在步骤 1 和 2 中，写入被发送到 EBS，EBS 再将其发送到 AZ 本地镜像，当两者都完成时收到确认。接着，在步骤 3 中，使用同步块级软件镜像将写入暂存到备用实例。最后，在步骤 4 和 5 中，写入被写入备用 EBS 卷及其关联的镜像。
 
@@ -421,23 +432,39 @@ Google 的 Spanner [24] 提供外部一致性（externally consistent）[25] 的
 
 **图 12：零停机打补丁**
 
-===== 第 11 页 =====
-
 **并发控制。** 弱一致性 (PACELC [17]) 和弱隔离模型 [18][20] 在分布式数据库中广为人知，并催生了乐观复制技术 [19] 以及最终一致系统 [21][22][23]。集中式系统中的其他方法范围广泛，包括基于锁的经典悲观方案 [28]、乐观方案（如 Hekaton [29] 中的多版本并发控制）、分片方法（如 VoltDB [30]）以及 HyPer [31][32] 和 Deuteronomy 中的时间戳排序。Aurora 的存储服务为数据库引擎提供了持久化本地磁盘的抽象，并允许引擎决定隔离和并发控制。
 
 **日志结构存储。** 日志结构存储系统由 LFS [33] 于 1992 年引入。最近，Deuteronomy 及其在 LLAMA [34] 和 Bw-Tree [35] 中的相关工作，在存储引擎栈的多个层面使用日志结构技术，并且像 Aurora 一样，通过写入增量（deltas）而非整个页面来减少写入放大。Deuteronomy 和 Aurora 都实现了纯重做日志记录（pure redo logging），并跟踪最高的稳定 LSN 以确认提交。
 
 **恢复。** 虽然传统数据库依赖基于 ARIES [5] 的恢复协议，但一些近期系统出于性能考虑选择了其他路径。例如，Hekaton 和 VoltDB 在崩溃后使用某种形式的更新日志重建其内存状态。像 Sinfonia [39] 这样的系统通过使用进程对（process pairs）和状态机复制（state machine replication）等技术避免恢复。Graefe [41] 描述了一种具有按页日志记录链的系统，支持按需逐页重做，这可以使恢复变快。与 Aurora 类似，Deuteronomy 不需要重做恢复。这是因为 Deuteronomy 延迟事务，使得只有已提交的更新才会发布到持久存储。因此，与 Aurora 不同，Deuteronomy 中可以限制事务的大小。
 
+
+
+
+
 ## **9. 结论**
+
+
 
 我们将 Aurora 设计为一种高吞吐量 OLTP 数据库，在云规模环境中既不牺牲可用性也不牺牲持久性。核心理念是摆脱传统数据库的单体架构，将存储与计算解耦。特别是，我们将数据库内核的底层四分之一移至一个独立的、可扩展的分布式服务，该服务管理日志记录和存储。由于所有 I/O 都通过网络写入，我们的根本约束现在变成了网络。因此，我们需要专注于减轻网络负担和提高吞吐量的技术。我们依赖能够处理大规模云环境中复杂和相关故障并避免离群性能惩罚的仲裁模型、减少总 I/O 负担的日志处理，以及消除通信密集且昂贵的多阶段同步协议、离线崩溃恢复和分布式存储中检查点的异步共识。我们的方法带来了一个复杂性降低、易于扩展的简化架构，并为未来的进步奠定了基础。
 
+
+
+
+
 ## **10. 致谢**
+
+
 
 我们感谢整个 Aurora 开发团队在项目上的努力，包括我们当前的成员以及杰出的校友（James Corey, Sam McKelvie, Yan Leshinsky, Lon Lundgren, Pradeep Madhavarapu, and Stefano Stefani）。我们特别感谢使用我们服务运行生产工作负载的客户，他们慷慨地与我们分享了他们的经验和期望。我们也感谢指导老师（shepherds）在塑造本文过程中提出的宝贵意见。
 
+
+
+
+
 ## **参考文献**
+
+
 
 * [1] B. Calder, J. Wang, et al. Windows Azure storage: A highly available cloud storage service with strong consistency. In _SOSP 2011_.
 * [2] O. Khan, R. Burns, J. Plank, W. Pierce, and C. Huang. Rethinking erasure codes for cloud file systems: Minimizing I/O for recovery and degraded reads. In _FAST 2012_.
@@ -457,8 +484,6 @@ Google 的 Spanner [24] 提供外部一致性（externally consistent）[25] 的
 * [16] S. Gilbert and N. Lynch. Brewer's conjecture and the feasibility of consistent, available, partition-tolerant web services. _SIGACT News_, 33(2):51-59, 2002.
 * [17] D.J. Abadi. Consistency tradeoffs in modern distributed database system design: CAP is only part of the story. _IEEE Computer_, 45(2), 2012.
 * [18] A. Adya. Weak consistency: a generalized theory and optimistic implementations for distributed transactions. PhD Thesis, MIT, 1999.
-
-===== 第 12 页 =====
 
 * [19] Y. Saito and M. Shapiro. Optimistic replication. _ACM Comput. Surv._, 37(1), Mar. 2005.
 * [20] H. Berenson, P. Bernstein, J. Gray, J. Melton, E. O'Neil, and P. O'Neil. A critique of ANSI SQL isolation levels. In _SIGMOD 1995_.
@@ -484,7 +509,5 @@ Google 的 Spanner [24] 提供外部一致性（externally consistent）[25] 的
 * [40] M. Weiner. Sharding Pinterest: How we scaled our MySQL fleet. Pinterest Engineering Blog. Available at: https://engineering.pinterest.com/blog/sharding-pinterest-how-we-scaled-our-mysql-fleet
 * [41] G. Graefe. Instant recovery for data center savings. _ACM SIGMOD Record_. 44(2):29-34, 2015.
 * [42] J. Dean and L. Barroso. The tail at scale. CACM 56(2):74-80, 2013.
-
-**[文件内容结束]**
 
 ---
