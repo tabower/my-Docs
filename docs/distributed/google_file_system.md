@@ -102,7 +102,7 @@ Google 已经针对不同的应用部署了多套 GFS 集群。最大的一个�
 
 **一个 GFS 集群包含一个单独的 Master 节点、多台 Chunk 服务器，并且同时被多个客户端访问**，如图 1 所示。所有的这些机器通常都是普通的 Linux 机器，运行着用户级别(user-level)的服务进程。我们可以很容易的把 Chunk 服务器和客户端都放在同一台机器上，前提是机器资源允许，并且我们能够接受不可靠的应用程序代码带来的稳定性降低的风险。
 
-![](./images/google_file_system/Fig1.png)
+![](https://r2-pub.tbw.wiki/piclist/2025/06/8395c17acbb1ba0363e594fec483100e.png)
 
 
 
@@ -224,7 +224,7 @@ GFS 具有宽松的一致性模型，这种模型很好地支持了我们高度�
 
 **文件命名空间的修改（例如，文件创建）是原子性的**。它们仅由 Master 节点的控制：命名空间锁提供了原子性和正确性（4.1 章）的保证；**Master 节点的操作日志定义了这些操作在全局的顺序（2.6.3 章）**。
 
-![](./images/google_file_system/Fig2.png)
+![](https://r2-pub.tbw.wiki/piclist/2025/06/dce504c1817c0b0cfdf264402b2d1875.png)
 
 
 
@@ -288,7 +288,7 @@ GFS 具有宽松的一致性模型，这种模型很好地支持了我们高度�
 
 在图 2 中，我们依据步骤编号，展现写入操作的控制流程。
 
-![](./images/google_file_system/Fig3.png)
+![](https://r2-pub.tbw.wiki/piclist/2025/06/d58045c3d3959150143bac9858ac86d4.png)
 
 
 

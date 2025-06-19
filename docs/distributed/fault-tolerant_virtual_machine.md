@@ -40,7 +40,7 @@ Bressoud 和 Schneider 描述了一个针对 HP PA-RISC 平台的故障容忍 VM
 
 ## 2. BASIC FT DESIGN
 
-![](./images/fault-tolerant_virtual_machine/FIg1.png)
+![](https://r2-pub.tbw.wiki/piclist/2025/06/734bcd6a1b219af399e7ce2607e17af9.png)
 
 
 
@@ -108,7 +108,7 @@ Bressoud 和 Schneider[3] 提到将 VM 执行切分成不同的时代（epoch）
 
 请注意，输出规则没有说明关于停止主 VM 执行的任何事情。我们只需要延迟输出的发送，但 VM 本身可以继续执行。由于操作系统通过异步中断来指示完成，因此可以执行非阻塞的网络和磁盘输出，VM 可以轻松地继续执行并且不一定会立即受到输出延迟的影响。相比之下，以前的工作 [3, 9] 通常必须在执行输出之前完全停止主 VM，直到备份 VM 确认收到主 VM 的所有必要信息。
 
-![](./images/fault-tolerant_virtual_machine/Fig2.png)
+![](https://r2-pub.tbw.wiki/piclist/2025/06/e58cd5eac918adc5288d84cb92123aa4.png)
 
 
 
@@ -156,7 +156,7 @@ Bressoud 和 Schneider[3] 提到将 VM 执行切分成不同的时代（epoch）
 
 在管理日志通道上的流量时，有许多有趣的实现细节。在我们的实现中，管理程序为主备 VM 的日志记录条目维持了一个大的缓冲区。当主 VM 执行时，它生成日志条目到缓冲区中，类似地，备份 VM 从它的日志缓冲区中消耗日志条目。主 VM 日志缓冲区的内容会被尽快刷新到日志记录通道，这些日志条目一旦到达日志通道，就会被读取到备份 VM 的日志缓冲区。**备份 VM 每次从网络上读取一些日志条目到它的日志缓冲区时，都会发送确认返回给主 VM**（也就是说除了与输出操作关联的日志条目，其他类型的日志条目也会发送确认信息）。这些确认允许 VMware FT 确定一个被输出规则延迟的输出何时可以被发送。图 3 说明了这个过程。
 
-![](./images/fault-tolerant_virtual_machine/Fig3.png)
+![](https://r2-pub.tbw.wiki/piclist/2025/06/d777d0ce5d9be8e4b0157c1ed1b7da88.png)
 
 
 
@@ -228,7 +228,7 @@ VMware vSphere 为 VM 网络提供了许多性能优化。其中一些优化是�
 
 在我们默认的设计中，主 VM 和备份 VM 共享相同的虚拟磁盘。因此，如果发生故障转移，共享磁盘的内容自然是正确的和可用的。实际上，共享磁盘被认为是主 VM 和备份 VM 之外的外部设备，因此**对共享磁盘的任何写操作都被视为对外部世界的通信**。因此，只有主 VM 实际对磁盘进行写操作，并且对共享磁盘的写操作必须按照输出规则进行延迟。
 
-![](./images/fault-tolerant_virtual_machine/Fig4.png)
+![](https://r2-pub.tbw.wiki/piclist/2025/06/95599649da34d275f2e76c306c973e7c.png)
 
 
 
@@ -270,7 +270,7 @@ VMware vSphere 为 VM 网络提供了许多性能优化。其中一些优化是�
 
 ### 5.1 Basic Performance Results
 
-![](./images/fault-tolerant_virtual_machine/Table1.png)
+![](https://r2-pub.tbw.wiki/piclist/2025/06/876a3ad4321adbcfd0a37313e273070e.png)
 
 
 
@@ -296,7 +296,7 @@ VMware vSphere 为 VM 网络提供了许多性能优化。其中一些优化是�
 
 出于多种原因。网络基准测试对我们的系统来说非常具有挑战性。第一，高速网络会有一个非常高的中断率，这需要以非常高的速度记录和重放异步事件。 第二，以高速率接收数据包的基准将导致高速率的日志流量，因为所有这些数据包必须通过日志通道发送到备份。第三，发送数据包的基准测试将受制于输出规则，延迟网络数据包的发送直到已收到来自备份VM的确认。 此延迟会增加对客户端测量的延迟。这种延迟还可能会降低到客户端的网络带宽，因为网络协议（如 TCP）由于往返延迟增加，可能不得不降低网络传输速率。
 
-![](./images/fault-tolerant_virtual_machine/Table2.png)
+![](https://r2-pub.tbw.wiki/piclist/2025/06/31106c133bd87bad90aaa952d5f37e50.png)
 
 
 
