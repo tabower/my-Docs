@@ -23,6 +23,7 @@ export default defineConfig({
     sidebar: [
        {
         text: 'Distributed',
+        link:'/distributed/index',
         items: [
           { text: 'aurora', link: '/distributed/aurora' },
           { text: 'craq', link: '/distributed/craq' },
@@ -32,9 +33,12 @@ export default defineConfig({
         ]
       },
       {
-        text: 'aos',
+        text: 'ask',
+        link:'/ask/index',
         items: [
-          { text: '中断处理', link: '/aos/中断处理' },
+          { text: '中断处理', link: '/ask/中断处理' },
+          { text: '虚存管理', link: '/ask/虚存管理' },
+          { text: '内存分配', link: '/ask/内存分配' },
         ]
       }
     ],
