@@ -50,6 +50,7 @@ export default defineConfig({
           { text: '虚存管理', link: '/ask/虚存管理' },
           { text: '内存分配', link: '/ask/内存分配' },
           { text: '内核模块', link: '/ask/内核模块' },
+          { text: '进程信号', link: '/ask/进程信号' },
         ]
       }
     ],
