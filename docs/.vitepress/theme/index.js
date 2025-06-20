@@ -1,5 +1,5 @@
 import DefaultTheme from 'vitepress/theme'
-import Layout from './Layout.vue' // 如果你有自定义布局
+import Layout from './Layout.vue'
 
 export default {
   ...DefaultTheme,
@@ -25,8 +25,8 @@ export default {
     loadCloudflareAnalytics()
 
     // 路由切换时检查（可选）
-    router.onAfterRouteChanged = () => {
-      loadCloudflareAnalytics()
-    }
+    // router.afterEach(() => {
+    //   loadCloudflareAnalytics()
+    // })
   }
 }
