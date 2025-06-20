@@ -9,8 +9,8 @@ onMounted(() => {
             script.src = 'https://utteranc.es/client.js';
             script.async = true;
             script.crossOrigin = 'anonymous';
-            script.setAttribute('repo', '[ENTER REPO HERE]');
-            script.setAttribute('issue-term', 'pathname');
+            script.setAttribute('repo', 'tabower/my-Docs');
+            script.setAttribute('issue-term', '/site');
             script.setAttribute('label', 'Comment');
             script.setAttribute('theme', 'preferred-color-scheme');
             commentRef.value.appendChild(script);
