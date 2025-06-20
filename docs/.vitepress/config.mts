@@ -49,6 +49,7 @@ export default defineConfig({
           { text: '中断处理', link: '/ask/中断处理' },
           { text: '虚存管理', link: '/ask/虚存管理' },
           { text: '内存分配', link: '/ask/内存分配' },
+          { text: '内核模块', link: '/ask/内核模块' },
         ]
       }
     ],
