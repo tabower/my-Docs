@@ -51,6 +51,7 @@ export default defineConfig({
           { text: '内存分配', link: '/ask/内存分配' },
           { text: '内核模块', link: '/ask/内核模块' },
           { text: '进程信号', link: '/ask/进程信号' },
+          { text: '文件系统', link: '/ask/文件系统' },
           { text: '探针和打桩', link: '/ask/探针和打桩' },
           { text: '函数约定(RV64)', link: '/ask/函数约定(RV64)' },
         ]
@@ -59,7 +60,7 @@ export default defineConfig({
 
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
+      { icon: 'github', link: 'https://github.com/tabower/my-Docs' }
     ],
   }
 })
