@@ -43,18 +43,18 @@ export default defineConfig({
         ]
       },
       {
-        text: 'ask',
-        link: '/ask/index',
+        text: 'aker',
+        link: '/aker/index',
         items: [
-          { text: '中断处理', link: '/ask/中断处理' },
-          { text: '虚存管理', link: '/ask/虚存管理' },
-          { text: '内存分配', link: '/ask/内存分配' },
-          { text: '内核模块', link: '/ask/内核模块' },
-          { text: '进程信号', link: '/ask/进程信号' },
-          { text: '文件系统', link: '/ask/文件系统' },
-          { text: '块设备IO', link: '/ask/块设备IO' },
-          { text: '探针和打桩', link: '/ask/探针和打桩' },
-          { text: '函数约定(RV64)', link: '/ask/函数约定(RV64)' },
+          { text: '中断处理', link: '/aker/中断处理' },
+          { text: '虚存管理', link: '/aker/虚存管理' },
+          { text: '内存分配', link: '/aker/内存分配' },
+          { text: '内核模块', link: '/aker/内核模块' },
+          { text: '进程信号', link: '/aker/进程信号' },
+          { text: '文件系统', link: '/aker/文件系统' },
+          { text: '块设备IO', link: '/aker/块设备IO' },
+          { text: '探针和打桩', link: '/aker/探针和打桩' },
+          { text: '函数约定(RV64)', link: '/aker/函数约定(RV64)' },
         ]
       }
     ],
