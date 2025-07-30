@@ -9,10 +9,10 @@ hero:
   actions:
     - theme: brand
       text: Docs
-      link: /distributed
+      link: docs/
     - theme: alt
       text: Notes
-      link: /index
+      link: notes/
 
 features:
   - title: Docs
