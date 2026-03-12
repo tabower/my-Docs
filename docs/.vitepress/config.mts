@@ -84,6 +84,19 @@ export default defineConfig({
             }
           ]
         },
+
+        {
+          "text": "Aker-rs",
+          "link": "docs/aker-rs/index",
+          collapsed: true,
+          "items": [
+            {
+              "text": "内核协程 - 调度器框架",
+              "link": "docs/aker-rs/内核协程 - 调度器框架"
+            },
+          ]
+        },
+
         {
           "text": "Distributed",
           "link": "docs/distributed/index",
