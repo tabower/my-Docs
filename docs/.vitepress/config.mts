@@ -4,9 +4,6 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "My Docs",
   description: "A VitePress Site",
-  sitemap: {
-    hostname: 'https://docs.160161.xyz'
-  },
   head: [
     [
       "meta",
